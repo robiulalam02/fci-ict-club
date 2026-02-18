@@ -1,24 +1,16 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
 
-// Ensure variables are loaded if working locally
-if (!process.env.MONGODB_URI) {
-    require('dotenv').config();
-}
+// No top-level logic that can hang
+const uri = process.env.MONGODB_URI;
 
-const client = new MongoClient(process.env.MONGODB_URI || "", {
-    serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true
-    },
+const client = new MongoClient(uri || "", {
+    serverApi: { version: ServerApiVersion.v1, strict: true, deprecationErrors: true },
     serverSelectionTimeoutMS: 5000,
     connectTimeoutMS: 5000
 });
 
-// We define the DB instance here
 const db = client.db();
 
-// We export the collections directly
 const collections = {
     users: db.collection("users"),
     certificates: db.collection("certificates"),
@@ -27,7 +19,7 @@ const collections = {
     mentors: db.collection("mentors"),
 };
 
-// Background connection (Does not block app startup)
-client.connect().catch(err => console.error("Database connection failed:", err));
+// Start connection in the background so it doesn't block Passenger
+client.connect().catch(err => console.error("DB Background Error:", err));
 
 module.exports = { client, collections };
