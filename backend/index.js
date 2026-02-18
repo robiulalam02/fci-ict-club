@@ -8,7 +8,7 @@ const port = process.env.PORT || 5000;
 
 // 1. Basic Middleware
 app.use(cors({
-    origin: ['http://localhost:5173', 'https://fciictclub2026.web.app', 'https://fciictclub2026.firebaseapp.com'],
+    origin: ['http://localhost:5173', 'https://fciictclub2026.web.app', 'https://fciictclub2026.firebaseapp.com', 'https://fciictclub.com'],
     credentials: true
 }));
 app.use(express.json());
